@@ -13,6 +13,8 @@ let db = require('./models')
 
 //启动缓存链接
 db.redisct()
+//启动mysql连接池
+db.pool
 
 //启动路由及端口处理
 let app = express()

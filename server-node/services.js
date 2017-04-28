@@ -51,13 +51,14 @@ module.exports = {
 				return new Promise((resolved, rejectd)=>{
 					db.pool
 					.getConnection((err, connection)=>{
+						console.log('ctId:' + connection.threadId)
 						if (err) {
 							return rejectd({
 								type: false,
 								data: err
 							})
 						}
-						connection.query('SELECT * FROM `users` WHERE `name` = ? AND `pwd` = ?',[req.body.name, req.body.pwd] , (err, results, fields)=>{
+						connection.query('SELECT * FROM `users` WHERE `name` = ? AND `pwd` = ? AND status = 1',[req.body.name, req.body.pwd] , (err, results, fields)=>{
 							connection.release()
 							if (err) {
 								return rejectd({
@@ -170,12 +171,8 @@ module.exports = {
 				data: err.data || err.message
 			})
 		})
-	},
+	}
 
 	/***inner类******************************************************************************************************/
-
-
-
-
 
 }

@@ -77,12 +77,18 @@ const redisIncrKeys = (key)=>{
 }
 
 //connect
-const pool = mysql.createPool({
-	host     : auth.mysqlHost,
-	user     : auth.mysqlUser,
-	password : auth.mysqlPs,
-	database : 'code_six_accounts'
-})
+const pool = (()=>{
+	let pool = mysql.createPool({
+		host     : auth.mysqlHost,
+		user     : auth.mysqlUser,
+		password : auth.mysqlPs,
+		database : 'code_six_accounts'
+	})
+	pool.on('connection', (connection)=>{
+	  console.log(auth.mysqlUser +':'+ auth.mysqlPs + '@' + auth.mysqlHost + ':3306/code_six_accounts mysql ready!')
+	})
+	return pool
+})()
 
 module.exports = {
 	redisct: redisct,
