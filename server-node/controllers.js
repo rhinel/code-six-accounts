@@ -1,6 +1,7 @@
 'use strict'
 
 let service = require('./services')
+let serviceTypes = require('./services-types')
 let code = require('./codes')
 
 //outer类，失败则跳过
@@ -41,6 +42,30 @@ const auth = (req, res, next)=>{
 const inner = (req, res, next)=>{
 	if (req.params.class == 'auth') {
 		res.json(code(0, {type:true}))
+	} else if (req.params.class === 'types') {
+		if (req.params.function === 'add') {
+			serviceTypes.add(req, res, (data)=>{
+				res.json(code(3001, data))
+			})
+		} else if (req.params.function === 'list') {
+			serviceTypes.list(req, res, (data)=>{
+				res.json(code(3002, data))
+			})
+		} else if (req.params.function === 'one') {
+			serviceTypes.one(req, res, (data)=>{
+				res.json(code(3003, data))
+			})
+		} else if (req.params.function === 'typeDetList') {
+			serviceTypes.typeDetList(req, res, (data)=>{
+				res.json(code(3004, data))
+			})
+		} else if (req.params.function === 'edit') {
+			serviceTypes.edit(req, res, (data)=>{
+				res.json(code(3005, data))
+			})
+		} else {
+			next()
+		}
 	} else {
 		next()
 	}

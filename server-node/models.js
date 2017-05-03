@@ -85,7 +85,7 @@ const pool = (()=>{
 		database : 'code_six_accounts'
 	})
 	pool.on('connection', (connection)=>{
-	  console.log(auth.mysqlUser +':'+ auth.mysqlPs + '@' + auth.mysqlHost + ':3306/code_six_accounts mysql ready!')
+	  // console.log(auth.mysqlUser +':'+ auth.mysqlPs + '@' + auth.mysqlHost + ':3306/code_six_accounts mysql ready!')
 	})
 	return pool
 })()
