@@ -52,6 +52,7 @@ module.exports = {
 							connection.query('INSERT INTO `accounts_types` SET ?', {
 								name: req.body.name,
 								detail: req.body.detail,
+								calc: req.body.calc,
 								createTIme: new Date()
 							}, (err, results, fields)=>{
 								if (err) {
@@ -148,9 +149,10 @@ module.exports = {
 						data: err
 					})
 				}
-				connection.query('UPDATE `accounts_types` SET `name` = ?, `detail` = ? WHERE `typeId` = ?', [
+				connection.query('UPDATE `accounts_types` SET `name` = ?, `detail` = ?, `calc` = ? WHERE `typeId` = ?', [
 					req.body.name,
 					req.body.detail,
+					req.body.calc,
 					req.body.typeId
 				], (err, results, fields)=>{
 					connection.release()
@@ -189,6 +191,42 @@ module.exports = {
 					})
 				}
 				connection.query('SELECT * FROM `accounts_types` WHERE `status` = 1', (err, results, fields)=>{
+					connection.release()
+					if (err) {
+						return rejectw({
+							type: false,
+							data: err
+						})
+					}
+					return resolvew(results)
+				})
+			})
+		})
+		.then((results)=>{
+			return Promise.reject({
+				type: true,
+				data: results
+			})
+		})
+		.catch((err)=>{
+			callback({
+				type: err.type || false,
+				data: err.data || err.message
+			})
+		})
+	},
+
+	minlist: (req, res, callback)=>{
+		return new Promise((resolvew, rejectw)=>{
+			db.pool
+			.getConnection((err, connection)=>{
+				if (err) {
+					return rejectw({
+						type: false,
+						data: err
+					})
+				}
+				connection.query('SELECT `name`, `typeId` FROM `accounts_types` WHERE `status` = 1', (err, results, fields)=>{
 					connection.release()
 					if (err) {
 						return rejectw({

@@ -63,6 +63,10 @@ const inner = (req, res, next)=>{
 			serviceTypes.edit(req, res, (data)=>{
 				res.json(code(3005, data))
 			})
+		} else if (req.params.function === 'minlist') {
+			serviceTypes.list(req, res, (data)=>{
+				res.json(code(3006, data))
+			})
 		} else {
 			next()
 		}
