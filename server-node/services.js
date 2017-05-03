@@ -52,12 +52,16 @@ module.exports = {
 					db.pool
 					.getConnection((err, connection)=>{
 						if (err) {
+							connection.release()
 							return rejectd({
 								type: false,
 								data: err
 							})
 						}
-						connection.query('SELECT * FROM `users` WHERE `name` = ? AND `pwd` = ? AND status = 1', [req.body.name, req.body.pwd], (err, results, fields)=>{
+						connection.query('SELECT * FROM `users` WHERE `name` = ? AND `pwd` = ? AND status = 1', [
+							req.body.name,
+							req.body.pwd
+						], (err, results, fields)=>{
 							connection.release()
 							if (err) {
 								return rejectd({

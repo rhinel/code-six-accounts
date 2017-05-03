@@ -2,6 +2,7 @@
 
 let service = require('./services')
 let serviceTypes = require('./services-types')
+let serviceRecord = require('./services-records')
 let code = require('./codes')
 
 //outer类，失败则跳过
@@ -64,8 +65,16 @@ const inner = (req, res, next)=>{
 				res.json(code(3005, data))
 			})
 		} else if (req.params.function === 'minlist') {
-			serviceTypes.list(req, res, (data)=>{
+			serviceTypes.minlist(req, res, (data)=>{
 				res.json(code(3006, data))
+			})
+		} else {
+			next()
+		}
+	} else if (req.params.class === 'record') {
+		if (req.params.function === 'add') {
+			serviceRecord.add(req, res, (data)=>{
+				res.json(code(4001, data))
 			})
 		} else {
 			next()
