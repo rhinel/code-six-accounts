@@ -173,10 +173,9 @@ module.exports = {
 						data: err
 					})
 				}
-				connection.query('UPDATE `accounts_types` SET `name` = ?, `detail` = ?, `calc` = ? WHERE `typeId` = ? AND `status` = 1 AND `userId` = ?', [
+				connection.query('UPDATE `accounts_types` SET `name` = ?, `detail` = ? WHERE `typeId` = ? AND `status` = 1 AND `userId` = ?', [
 					req.body.name,
 					req.body.detail,
-					req.body.calc,
 					req.body.typeId,
 					req.userId
 				], (err, results, fields)=>{
