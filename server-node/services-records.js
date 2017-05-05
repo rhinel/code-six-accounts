@@ -80,78 +80,81 @@ module.exports = {
 							})
 						})
 					})()
-					// 2查询日期
-					let checkDate = await (()=>{
-						return new Promise((resolved, rejectd)=>{
-							connection.query('SELECT * FROM `accounts_dates` WHERE `date` = ? AND `status` = 1 AND `userId` = ?', [
+
+					if (check[0].calc == 1) {
+						// 2查询日期
+						let checkDate = await (()=>{
+							return new Promise((resolved, rejectd)=>{
+								connection.query('SELECT * FROM `accounts_dates` WHERE `date` = ? AND `status` = 1 AND `userId` = ?', [
+									req.body.date,
+									req.userId
+								], (err, results, fields)=>{
+									if (err) {
+										connection.release()
+										return connection.rollback(rejectw({
+											type: false,
+											data: err
+										}))
+									}
+									resolved(results)
+								})
+							})
+						})()
+						// 2判断
+						let ids = ''
+						let idd = {}
+						if (!checkDate[0]) {
+							ids = 'INSERT INTO `accounts_dates` SET ?'
+							idd = {
+								date: req.body.date,
+								increased: req.body.increased,
+								reduce: req.body.reduce,
+								createTIme: new Date(),
+								userId: req.userId
+							}
+						} else {
+							ids = 'UPDATE `accounts_dates` SET `increased` = ?, `reduce` = ? WHERE `date` = ? AND `status` = 1 AND `userId` = ?'
+							idd = [
+								fixNum(Number(checkDate[0].increased) + Number(req.body.increased)),
+								fixNum(Number(checkDate[0].reduce) + Number(req.body.reduce)),
 								req.body.date,
 								req.userId
-							], (err, results, fields)=>{
-								if (err) {
-									connection.release()
-									return connection.rollback(rejectw({
-										type: false,
-										data: err
-									}))
-								}
-								resolved(results)
-							})
-						})
-					})()
-					// 2判断
-					let ids = ''
-					let idd = {}
-					if (!checkDate[0]) {
-						ids = 'INSERT INTO `accounts_dates` SET ?'
-						idd = {
-							date: req.body.date,
-							increased: req.body.increased,
-							reduce: req.body.reduce,
-							createTIme: new Date(),
-							userId: req.userId
+							]
 						}
-					} else {
-						ids = 'UPDATE `accounts_dates` SET `increased` = ?, `reduce` = ? WHERE `date` = ? AND `status` = 1 AND `userId` = ?'
-						idd = [
-							fixNum(Number(checkDate[0].increased) + Number(req.body.increased)),
-							fixNum(Number(checkDate[0].reduce) + Number(req.body.reduce)),
-							req.body.date,
-							req.userId
-						]
+						// 2更新日期
+						let checkDateCalc = await (()=>{
+							return new Promise((resolved, rejectd)=>{
+								connection.query(ids, idd, (err, results, fields)=>{
+									if (err) {
+										connection.release()
+										return connection.rollback(rejectw({
+											type: false,
+											data: err
+										}))
+									}
+									resolved(results)
+								})
+							})
+						})()
+						// 2更新统计
+						let checkUser = await (()=>{
+							return new Promise((resolved, rejectd)=>{
+								connection.query('UPDATE `users` SET `count` = `count` + ? WHERE `status` = 1 AND `userId` = ?', [
+									fixNum(Number(req.body.increased) - Number(req.body.reduce)),
+									req.userId
+								], (err, results, fields)=>{
+									if (err) {
+										connection.release()
+										return connection.rollback(rejectw({
+											type: false,
+											data: err
+										}))
+									}
+									resolved(results)
+								})
+							})
+						})()
 					}
-					// 2更新日期
-					let checkDateCalc = await (()=>{
-						return new Promise((resolved, rejectd)=>{
-							connection.query(ids, idd, (err, results, fields)=>{
-								if (err) {
-									connection.release()
-									return connection.rollback(rejectw({
-										type: false,
-										data: err
-									}))
-								}
-								resolved(results)
-							})
-						})
-					})()
-					// 2更新统计
-					let checkUser = await (()=>{
-						return new Promise((resolved, rejectd)=>{
-							connection.query('UPDATE `users` SET `count` = `count` + ? WHERE `status` = 1 AND `userId` = ?', [
-								fixNum(Number(req.body.increased) - Number(req.body.reduce)),
-								req.userId
-							], (err, results, fields)=>{
-								if (err) {
-									connection.release()
-									return connection.rollback(rejectw({
-										type: false,
-										data: err
-									}))
-								}
-								resolved(results)
-							})
-						})
-					})()
 					// 3插入数据
 					let results = await (()=>{
 						return new Promise((resolved, rejectd)=>{
