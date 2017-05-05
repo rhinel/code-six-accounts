@@ -6,7 +6,7 @@ docker rm -f codesixaccounts
 docker run \
  --name codesixaccounts \
  --link myredis:myredis \
- --link mymongo:mymongo \
+ --link mysql:mysql \
  --expose 80 \
  --expose 443 \
  -v ~/gitcode/code-six-accounts:/webapp \
