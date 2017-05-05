@@ -203,6 +203,51 @@ module.exports = {
 		})
 	},
 
+	one: (req, res, callback)=>{
+		if (!req.body.recordId) {
+			return callback({
+				type: false,
+				data: '缺少记录ID'
+			})
+		}
+		return new Promise((resolvew, rejectw)=>{
+			db.pool
+			.getConnection((err, connection)=>{
+				if (err) {
+					return rejectw({
+						type: false,
+						data: err
+					})
+				}
+				connection.query('SELECT * FROM `accounts_records` WHERE `recordId` = ? AND `status` = 1 AND `userId` = ?', [
+					req.body.recordId,
+					req.userId
+				], (err, results, fields)=>{
+					connection.release()
+					if (err) {
+						return rejectw({
+							type: false,
+							data: err
+						})
+					}
+					return resolvew(results)
+				})
+			})
+		})
+		.then((results)=>{
+			return Promise.reject({
+				type: true,
+				data: results
+			})
+		})
+		.catch((err)=>{
+			callback({
+				type: err.type || false,
+				data: err.data || err.message
+			})
+		})
+	},
+
 	edit: (req, res, callback)=>{
 
 	},

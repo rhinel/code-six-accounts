@@ -2,7 +2,9 @@
 
 let service = require('./services')
 let serviceTypes = require('./services-types')
-let serviceRecord = require('./services-records')
+let serviceRecords = require('./services-records')
+let serviceDates = require('./services-dates')
+let serviceUsers = require('./services-users')
 let code = require('./codes')
 
 //outer类，失败则跳过
@@ -73,8 +75,36 @@ const inner = (req, res, next)=>{
 		}
 	} else if (req.params.class === 'record') {
 		if (req.params.function === 'add') {
-			serviceRecord.add(req, res, (data)=>{
+			serviceRecords.add(req, res, (data)=>{
 				res.json(code(4001, data))
+			})
+		} else if (req.params.function === 'one') {
+			serviceRecords.one(req, res, (data)=>{
+				res.json(code(4002, data))
+			})
+		} else {
+			next()
+		}
+	} else if (req.params.class === 'date') {
+		if (req.params.function === 'list') {
+			serviceDates.list(req, res, (data)=>{
+				res.json(code(5001, data))
+			})
+		} else if (req.params.function === 'dateDetList') {
+			serviceDates.dateDetList(req, res, (data)=>{
+				res.json(code(5002, data))
+			})
+		} else if (req.params.function === 'one') {
+			serviceDates.one(req, res, (data)=>{
+				res.json(code(5003, data))
+			})
+		} else {
+			next()
+		}
+	} else if (req.params.class === 'user') {
+		if (req.params.function === 'count') {
+			serviceUsers.count(req, res, (data)=>{
+				res.json(code(6001, data))
 			})
 		} else {
 			next()

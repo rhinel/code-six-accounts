@@ -297,7 +297,7 @@ module.exports = {
 						data: err
 					})
 				}
-				connection.query('SELECT * FROM `accounts_records` WHERE `typeId` = ? AND `status` = 1 AND `userId` = ? LIMIT ?, ?', [
+				connection.query('SELECT * FROM `accounts_records` WHERE `typeId` = ? AND `status` = 1 AND `userId` = ? ORDER BY `recordId` DESC LIMIT ?, ?', [
 					req.body.typeId,
 					req.userId,
 					(req.body.page - 1) * req.body.size,
