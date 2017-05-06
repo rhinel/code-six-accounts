@@ -82,6 +82,14 @@ const inner = (req, res, next)=>{
 			serviceRecords.one(req, res, (data)=>{
 				res.json(code(4002, data))
 			})
+		} else if (req.params.function === 'edit') {
+			serviceRecords.edit(req, res, (data)=>{
+				res.json(code(4003, data))
+			})
+		} else if (req.params.function === 'del') {
+			serviceRecords.del(req, res, (data)=>{
+				res.json(code(4004, data))
+			})
 		} else {
 			next()
 		}
