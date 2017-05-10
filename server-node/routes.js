@@ -18,6 +18,6 @@ module.exports = (app, express)=>{
 	//处理页面, 动态加载
 	app.use('/', express.static(path.resolve(__dirname, '../404')))
 	app.get('*', (req, res)=>{
-		res.send(fs.readFileSync(path.resolve('../dist/404.html'), 'utf-8'))
+		res.send(fs.readFileSync(path.resolve('../404/404.html'), 'utf-8'))
 	})
 }
