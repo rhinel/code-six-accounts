@@ -18,6 +18,7 @@ module.exports = (app, express)=>{
 	//处理页面, 动态加载
 	//app.use('/', express.static(path.resolve(__dirname, '../dist')))
 	app.get('*', (req, res)=>{
-		res.send('页面飘走了！')
+		res.sendStatus(404)
+		//res.send('页面飘走了！')
 	})
 }
