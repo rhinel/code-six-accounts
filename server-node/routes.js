@@ -16,9 +16,8 @@ module.exports = (app, express)=>{
 	app.route('/api/*').post(controller.def)
 
 	//处理页面, 动态加载
-	//app.use('/', express.static(path.resolve(__dirname, '../dist')))
+	app.use('/', express.static(path.resolve(__dirname, '../404')))
 	app.get('*', (req, res)=>{
-		res.sendStatus(404)
-		//res.send('页面飘走了！')
+		res.send(fs.readFileSync(path.resolve('../dist/404.html'), 'utf-8'))
 	})
 }
