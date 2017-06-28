@@ -9,6 +9,7 @@ docker run \
  --link mysql:mysql \
  --expose 80 \
  --expose 443 \
+ -v /etc/localtime:/etc/localtime \
  -v ~/gitcode/code-six-accounts:/webapp \
  -v ~/ssl-key:/ssl-key \
  -w /webapp/server-node \
