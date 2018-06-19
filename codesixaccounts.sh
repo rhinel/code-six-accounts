@@ -4,6 +4,7 @@ docker rm -f codesixaccounts
 
 # 启动并自动重启
 docker run \
+ --restart always \
  --name codesixaccounts \
  --link myredis:myredis \
  --link mysql:mysql \
@@ -11,6 +12,5 @@ docker run \
  --expose 443 \
  -v /etc/localtime:/etc/localtime \
  -v ~/gitcode/code-six-accounts:/webapp \
- -v ~/ssl-key:/ssl-key \
  -w /webapp/server-node \
  -d node node index

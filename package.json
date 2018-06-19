@@ -1,22 +1,30 @@
 {
   "name": "code-six-accounts",
   "version": "1.0.0",
-  "main": "index.js",
-  "repository": "https://github.com/rhinel/code-six-accounts.git",
+  "description": "code-six-accounts",
   "author": "rhinel <rhinelkc@hotmail.com>",
-  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "git-init": "git submodule update --init --recursive",
+    "serve": "node server-node/index.js",
+    "lint": "eslint --fix --ext .js server-node"
+  },
   "dependencies": {
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
-    "fs": "^0.0.1-security",
-    "http": "^0.0.0",
-    "https": "^1.0.0",
     "md5": "^2.2.1",
     "morgan": "^1.8.1",
     "mysql": "^2.13.0",
-    "path": "^0.12.7",
-    "redis": "^2.7.1",
+    "redis": "^2.8.0",
     "rotating-file-stream": "^1.2.2",
     "superagent": "^3.5.2"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.3",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-html": "^4.0.3",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-node": "^6.0.1"
   }
 }
