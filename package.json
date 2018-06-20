@@ -3,6 +3,7 @@
   "version": "0.0.5",
   "description": "code-six-accounts",
   "author": "rhinel <rhinelkc@hotmail.com>",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "git-init": "git submodule update --init --recursive",
